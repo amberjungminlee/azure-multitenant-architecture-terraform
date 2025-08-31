@@ -19,3 +19,14 @@ To deploy the infrastructure, follow these steps:
     - environment - baseline (sit, uat, prod)
     - team_locations - map that container information about each team and their locations. For additional teams, you will have to add their information here.
     - team_networks - Custom private address spaces and subnets for each team
+    - shared_location - Location of where the shared resource group is stored.
+4. Initialize terraform with the following command:
+    ```terraform init```
+5. Plan the deployment to view the resources to be created:
+    ```terraform plan```
+6. Apply the deployment if there are no issues.
+    ```terraform apply```
+
+# Deletion
+1. Run the following command to destroy the stack:
+    ```terraform destroy```
