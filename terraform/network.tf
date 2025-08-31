@@ -149,3 +149,23 @@ resource "azurerm_nat_gateway_public_ip_association" "team_nat_gateway_public_ip
   nat_gateway_id = azurerm_nat_gateway.team_nat_gateway[each.key].id
   public_ip_address_id = azurerm_public_ip.team_nat_ip[each.key].id
 }
+
+# Route Table to associate with the subnet
+resource "azurerm_route_table" "team_route_table" {
+  for_each = var.team_locations
+  name                = "${var.environment}-${each.key}-route-table"
+  location            = azurerm_resource_group.team_resource_group[each.key].location
+  resource_group_name = azurerm_resource_group.team_resource_group[each.key].name
+
+  tags = {
+    Team = each.key   
+    Environment = var.environment
+  }
+}
+
+resource "azurerm_subnet_route_table_association" "team_route_table_association" {
+  for_each = var.team_locations
+
+  subnet_id      = azurerm_subnet.team_subnets[each.key].id
+  route_table_id = azurerm_route_table.team_route_table[each.key].id
+}
