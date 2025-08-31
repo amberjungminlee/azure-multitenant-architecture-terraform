@@ -1,21 +1,24 @@
-# Assumptions
+# Decisions
 Configuration Management
  1. The deployment scripts are going to be run regularly (daily)
  2. None of the resources are going to be destroyed except under special circumstances (which is why prevent_destroy is not set on any of the resources)
  3. New teams may get added in the future
  4. SIT, UAT, and Production could be all located in the same Azure account
 
- Design Decisions
+Design Decisions
  1. NAT Gateways have to be separate for all teams
  2. All teams will have the same IAM roles (Operator, Developer, Read-Only)
  3. Key Vault makes sense as part of the shared resources
 
- Future Developments to make scripts production ready
+Future Developments to make scripts production ready
  1. Create module for users and role assignments
  2. Fix bug where NAT gateway isn't being assigned properly to subnet
  3. Set prevent_destroy flag on the majority of resources
  4. Set backend to store statefiles in Azure instead of local
  5. Configure the routes for the routing table
+
+Appendix: How AI was Used
+Appendix: Challenges
 
 ## Configuration Management
 ###  1. The deployment scripts are going to be run regularly (daily)
@@ -55,3 +58,16 @@ Having statefiles in Azure allows there to be multiple collaborators on the same
 
 ### 5. Only a basic routing table was created for now.
 I didn't have time to configure everything for the routing table, but if I had time, I would have configured more rules.
+
+## Appendix: How AI was used
+I have no experience with Azure, and I used AI to catch up on Azure terminology, especially in reference to AWS. I found that ChatGPT had limited information about Azure, but Copilot had better documentation as a Microsoft product.
+
+I used AI to double check on terraform code that may have been missing or can cause issues.
+
+I used Copilot as a sounding board during the architecture design process to decide what resources were the best to add, and which configuration may be easier to maintain longer term.
+
+## Appendix: Challenges
+1. A lot of permissions are involved when it comes to allowing permissions to provision a virtual machine, so custom roles ended up taking more time than expected.
+2. Azure CLI is more effective than Azure UI when provisioning certain resources such as role assignments. The UI was challenging to navigate.
+
+
