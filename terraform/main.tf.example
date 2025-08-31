@@ -5,6 +5,13 @@ terraform {
       version = "~>3.0"
     }
   }
+  backend "local" {
+  //   # Please update based on baseline
+  //   # path = environment/sit/terraform.tfstate
+  //   # path = environment/uat/terraform.tfstate
+  //   # path = environment/prod/terraform.tfstate
+     path = environment/sit/terraform.tfstate
+  }
 }
 
 provider "azurerm" {
