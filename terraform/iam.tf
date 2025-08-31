@@ -25,7 +25,17 @@ resource "azurerm_role_definition" "developer" {
       "Microsoft.Compute/virtualMachines/write",
       "Microsoft.Compute/virtualMachines/delete",
       "Microsoft.Compute/virtualMachines/redeploy/action",
-      "Microsoft.Compute/virtualMachines/powerOff/action"
+      "Microsoft.Compute/virtualMachines/powerOff/action",
+      "Microsoft.Resources/subscriptions/resourceGroups/read",
+      "Microsoft.Resources/subscriptions/resourceGroups/resources/read",
+      "Microsoft.Resources/deployments/validate/action",
+      "Microsoft.Network/networkSecurityGroups/write",
+      "Microsoft.Network/virtualNetworks/read",
+      "Microsoft.Network/virtualNetworks/subnets/read",
+      "Microsoft.Resources/subscriptions/resourceGroups/read",
+      "Microsoft.Network/virtualNetworks/subnets/join/action",
+      "Microsoft.Network/networkInterfaces/read",
+      "Microsoft.Network/publicIPAddresses/read"
     ]
     not_actions = []
   }
