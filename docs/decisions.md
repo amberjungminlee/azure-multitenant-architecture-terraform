@@ -1,80 +1,80 @@
-# Decisions
-Configuration Management
- 1. The deployment scripts are going to be run regularly (daily)
- 2. None of the resources are going to be destroyed except under special circumstances (which is why prevent_destroy is not set on any of the resources)
- 3. New teams may get added in the future
- 4. SIT, UAT, and Production could be all located in the same Azure account
+# 🧠 Architectural Decisions
 
-Design Decisions
- 1. NAT Gateways have to be separate for all teams
- 2. All teams will have the same IAM roles (Operator, Developer, Read-Only)
- 3. Key Vault makes sense as part of the shared resources
- 4. Resource groups help analyze each team's usage separately in cost analysis
- 5. A team will have access to their own log analytics workspace as well as a shared analytics workspace
+## 🔧 Configuration Management
 
-Future Developments to make scripts production ready
- 1. Create module for users and role assignments
- 2. Fix bug where NAT gateway isn't being assigned properly to subnet
- 3. Set prevent_destroy flag on the majority of resources
- 4. Set backend to store statefiles in Azure instead of local
- 5. Configure the routes for the routing table
- 6. Didn't completely set up an application for testing yet
+1. **Daily Deployment Scripts**  
+   Deployment scripts are designed to run regularly (daily). Shared resources are updated by querying all users in the system and applying changes to the shared resource group. New users may experience a short delay before their access is reflected.
 
-Appendix: How AI was Used
-Appendix: Challenges
+2. **No `prevent_destroy` Flag (for Now)**  
+   Resources are not protected from destruction by default. While `prevent_destroy` would be ideal in a production environment—especially for critical network components—it was omitted here to simplify testing and iteration.
 
-## Configuration Management
-###  1. The deployment scripts are going to be run regularly (daily)
-Shared resources are allowed by querying all users in the system and applying them to the shared resource group. If new users are added, there may be a slight delay until the deployment scripts are kicked off again.
+3. **Support for Future Team Expansion**  
+   The architecture accommodates new teams by updating `team_networks` and `team_locations` in `variables.tf`. This allows for scalable onboarding without major refactoring.
 
-### 2. None of the resources are going to be destroyed except under special circumstances (which is why prevent_destroy is not set on any of the resources)
-Network resources are more critical to user workflow than regular application resources. In a true production environment, I would have set prevent_destroy to true on all resources. However, for the sake of this exercise, this was left out to make testing more convenient.
+4. **SIT, UAT, and Production in One Azure Account**  
+   Although not recommended for strict isolation, the design assumes that all environments (SIT, UAT, PROD) could coexist within a single Azure account if needed.
 
-###  3. New teams may get added in the future
-For ease of use, variables.tf is where new teams will get added. There are two variables ```team_networks``` and ```team_locations``` where custom information about the teams can get specified.
+---
 
-### 4. SIT, UAT, and Production could be all located in the same Azure account
-While, this is not a setup I recommend, I assumed that it is possible to set up all three baselines in the same account if needed.
+## 🧱 Design Decisions
 
-## Design Decisions
-### 1. NAT Gateways have to be separate for all teams
-Each team has their own dedicated NAT gateway just in case there is separate billing for high traffic for one team and ease of debugging.
+1. **Dedicated NAT Gateways per Team**  
+   Each team receives its own NAT gateway to isolate traffic, simplify debugging, and support potential billing separation for high-throughput workloads.
 
-### 2. All teams will have the same IAM roles (Operator, Developer, Read-Only)
-New roles can be added, but this will require a DevOps engineer to add the custom roles to the terraform script, and once added, the new role would be available to all teams, not just the individual team that requested it.
+2. **Standardized IAM Roles Across Teams**  
+   All teams are assigned the same role set: Operator, Developer, and Read-Only. Custom roles can be added by a DevOps engineer, but would apply globally across all teams.
 
-### 3. Key Vault makes sense as part of the shared resources
-When it comes to certain data like recommended Azure VM image URNs that have gone through proper security approvals, it makes sense to have this as part of the shared storage, so when developers make new deployments, they won't have to "fish" for the latest recommended images and won't deploy outdated versions of docker. 
+3. **Shared Key Vault for Approved Resources**  
+   A centralized Key Vault stores vetted Azure VM image URNs and other shared secrets. This prevents teams from deploying outdated or insecure configurations and streamlines provisioning.
 
-### 4. Resource groups help analyze each team's usage separately in cost analysis
-![Cost Analysis](images/costanalysisseparatedbyresourcegroup.png)
+4. **Resource Groups for Cost Visibility**  
+   Each team’s resources are grouped separately to enable granular cost analysis.  
+   ![Cost Analysis](images/costanalysisseparatedbyresourcegroup.png)
 
-### 5. A team will have access to their own log analytics workspace as well as a shared analytics workspace
-For security reasons, teams should not have unrestricted access to all logs. However, have limited access to some log analytics about the whole Azure account could be helpful, so a shared log analytics workspace has been set up. Each team would also have access to their own log analytics workspace so they can track their own usage and expenses.
+5. **Dual Log Analytics Workspaces**  
+   Teams have access to both their own log analytics workspace and a shared workspace. This balances visibility with security, allowing teams to monitor their own usage while accessing limited insights across the broader environment.
 
-## Future Developments
-### 1. Create module for users and role assignments
-Would be able to restore users if Azure account somehow gets deleted.
+---
 
-### 2. Fix bug where NAT gateway isn't being assigned properly to subnet
-Although this was part of the design, had an odd issue where NAT gateway was not assigned to the subnet, and had to be manually attached after deployment is complete.
+## 🚀 Future Enhancements
 
-### 3. Set prevent_destroy flag on the majority or all resources
-Once these resources are created, it's safest to prevent resources from being destroyed to prevent risks for tenants.
+1. **User & Role Assignment Module**  
+   A dedicated module for managing users and roles would improve resilience and simplify recovery if the Azure account were compromised or reset.
 
-### 4. Set backend to store statefiles in Azure instead of local
-Having statefiles in Azure allows there to be multiple collaborators on the same terraform.
+2. **Fix NAT Gateway Assignment Bug**  
+   NAT gateways are not consistently attached to subnets during deployment. This currently requires manual intervention post-deployment.
 
-### 5. Only a basic routing table was created for now.
-I didn't have time to configure everything for the routing table, but if I had time, I would have configured more rules.
+3. **Enable `prevent_destroy` on Critical Resources**  
+   To protect tenant environments, most resources should be flagged with `prevent_destroy` once the infrastructure is stable.
 
-## Appendix: How AI was used
-I have no experience with Azure, and I used AI to catch up on Azure terminology, especially in reference to AWS. I found that ChatGPT had limited information about Azure, but Copilot had better documentation as a Microsoft product.
+4. **Move Terraform State to Azure Backend**  
+   Storing statefiles in Azure enables collaboration and improves reliability. The current local backend is suitable for testing but not production.
 
-I used AI to double check on terraform code that may have been missing or can cause issues.
+5. **Expand Routing Table Configuration**  
+   Only basic routing rules are currently implemented. A more comprehensive setup would improve traffic control and security posture.
 
-I used Copilot as a sounding board during the architecture design process to decide what resources were the best to add, and which configuration may be easier to maintain longer term.
+6. **Application Testing Not Yet Implemented**  
+   A test application was planned but not completed due to time constraints.
 
-## Appendix: Challenges
-1. A lot of permissions are involved when it comes to allowing permissions to provision a virtual machine, so custom roles ended up taking more time than expected.
-2. Azure CLI is more effective than Azure UI when provisioning certain resources such as role assignments. The UI was challenging to navigate.
+---
+
+## 🤖 Appendix: How AI Was Used
+
+- **Learning Azure Concepts**  
+  As someone new to Azure, I used AI tools to bridge the gap between AWS familiarity and Azure-specific terminology.
+
+- **Code Validation & Troubleshooting**  
+  AI helped identify missing Terraform blocks and potential misconfigurations.
+
+- **Architectural Brainstorming**  
+  I used Copilot as a sounding board to evaluate trade-offs between resource types, security models, and maintainability.
+
+---
+
+## ⚠️ Appendix: Challenges
+
+1. **Complex Role Assignment Permissions**  
+   Provisioning VMs required extensive permission setup. Custom roles took longer than expected due to Azure’s RBAC intricacies.
+
+2. **Azure CLI vs. Portal**  
+   The Azure CLI proved more efficient than the UI for tasks like role assignments. The portal was often unintuitive and slower to navigate.

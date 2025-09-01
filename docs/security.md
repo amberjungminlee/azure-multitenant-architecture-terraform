@@ -1,48 +1,85 @@
-# Security
+# 🔐 Security Overview
 
-## Compliance
-For security, I assumed that HIPAA compliance is not necessary because no PII should be involved in Mars research or Earth observation data. However, I assumed all resources should be set to private by default, but may not need encryption at rest or require complex access controls or auditing.
+## 🛡️ Compliance Assumptions
 
-## Resources that help security
+This infrastructure is designed for scientific research (e.g., Mars exploration, Earth observation) and does **not involve PII or health data**. As such:
 
-### Route Tables
-A route table can restrict which subnets or networks are reachable.
+- **HIPAA compliance is not required**
+- **Resources are private by default**
+- **Encryption at rest and complex auditing are not enforced**, given the lower sensitivity of the data
 
-By not defining a route to sensitive resources, you effectively make them unreachable from certain parts of the network (security by absence of a path).
+This approach reflects a **risk-based security model**, balancing protection with operational simplicity.
 
-This principle is heavily used in cloud environments (e.g., AWS route tables for VPC subnets).
+---
 
-### Network Security Groups
-A network security group (NSG) acts as a stateful firewall at the subnet or network interface level. 
+## 🧰 Security-Enabling Resources
 
-It improves security by explicitly controlling inbound and outbound traffic with allow/deny rules based on IP, port, and protocol. 
+### 📍 Route Tables
 
-This ensures only approved traffic reaches workloads, reducing the attack surface and limiting lateral movement. In effect, it enforces least privilege at the network layer.
+Route tables restrict which subnets or networks are reachable. By **omitting routes to sensitive resources**, you effectively isolate them — a concept known as **security by absence of a path**.
 
-### NAT Gateway
-A NAT gateway improves security by allowing outbound internet access from private subnets without exposing those resources to unsolicited inbound connections. 
+This principle is widely used in cloud environments (e.g., AWS VPC route tables) to enforce segmentation and reduce exposure.
 
-Internal hosts can initiate traffic to the internet, but external hosts cannot initiate connections back, since the NAT translates private IPs into a single public IP. 
+---
 
-This prevents direct exposure of sensitive workloads while still enabling updates, API calls, or other necessary outbound communication.
+### 🔥 Network Security Groups (NSGs)
 
-### User Roles
-A user role strengthens security by enforcing role-based access control (RBAC)—users are granted only the permissions necessary to perform their duties, nothing more. 
+NSGs act as **stateful firewalls** at the subnet or network interface level. They:
 
-This limits the damage that could result from compromised credentials or human error, since access is confined to defined tasks. Roles also centralize policy enforcement, making it easier to maintain the principle of least privilege across an organization.
+- Control inbound/outbound traffic via allow/deny rules
+- Filter by IP, port, and protocol
+- Enforce **least privilege** at the network layer
 
-## Screenshots
+This minimizes the attack surface and limits lateral movement between workloads.
 
-Fictional Team Alpha member can log into her account.
+---
+
+### 🌐 NAT Gateway
+
+A NAT gateway enables **outbound internet access** from private subnets without exposing them to unsolicited inbound traffic.
+
+- Internal hosts can initiate outbound traffic
+- External hosts **cannot initiate inbound connections**
+- NAT translates private IPs to a shared public IP
+
+This design supports secure updates, API calls, and telemetry without compromising workload isolation.
+
+---
+
+### 👥 User Roles & RBAC
+
+Role-based access control (RBAC) ensures users only have permissions necessary for their responsibilities.
+
+- Limits damage from compromised credentials or human error
+- Enforces **least privilege**
+- Centralizes policy enforcement across teams
+
+Roles are defined as Operator, Developer, and Read-Only, with potential for expansion.
+
+---
+
+## 📸 Screenshots
+
+### 🔐 Team Alpha Login
+Fictional Team Alpha member logs into her account.  
 ![Login page](images/arielteamalphaloginpage.png)
 
-Team Alpha member can only see her own resource group from the VM creation page
-![VM Creation settings](images/arielteamalphaonlyseeherownresourcegroup.png)
-![VM Creation validation](images/arielteamalphavmcreation.png)
+---
+
+### 🧭 Team Alpha VM Creation
+Team Alpha member can only see her own resource group during VM provisioning.  
+![VM Creation settings](images/arielteamalphaonlyseeherownresourcegroup.png)  
+![VM Creation validation](images/arielteamalphavmcreation.png)  
 ![VM Final creation](images/arielteamalphacanseealphavms.png)
 
-Team Beta member cannot see Team alpha's newly created virtual machine
+---
+
+### 🚫 Team Beta Access Restriction
+Team Beta member cannot view Team Alpha’s virtual machines.  
 ![Beta's VM list appears empty](images/bobteambetacannotseealphavm.png)
 
-Developers are restricted from seeing certain pages not included in their permissions.
+---
+
+### 🔒 Developer Role Restrictions
+Developers are restricted from accessing pages outside their permissions.  
 ![Restricted access](images/developernoaccesscostanalysis.png)

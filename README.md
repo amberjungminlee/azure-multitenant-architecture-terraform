@@ -1,10 +1,27 @@
 # Multi-Tenant Architecture
 
-An implementation of isolated infrastructure environments for different research teams in NASA.
+## Overview
 
-This documentation assumes that you already have an Azure account, you registered your application, and you have the client ID and client secrets with the correct RBAC permissions set up so you can access all your resources.
+This Terraform-based infrastructure project provisions isolated environments for multiple research teams at NASA. Each team receives its own private network and resource group, ensuring strong separation of workloads while maintaining centralized governance. The architecture supports scalability, modularity, and secure access via Microsoft Entra ID.
 
-# Deployment
+## Microsoft Entra ID Integration
+
+This project uses Microsoft Entra ID (formerly Azure Active Directory) for secure authentication and access control. The registered application must have appropriate RBAC permissions to provision resources across subscriptions.
+
+- **App Registration**: Required for Terraform to authenticate via service principal.
+- **RBAC Setup**: Ensure the app has Contributor or Owner roles on the target subscription.
+- **Tenant Isolation**: Each team’s environment is scoped to its own subnet and resource group, with access managed via Entra ID groups.
+
+## Security Considerations
+
+Because the infrastructure supports scientific research data (not health or PII), the following security measures were prioritized:
+
+- **Encryption in Transit**: All traffic between resources is encrypted using Azure defaults.
+- **Private by Default**: All subnets and resources are deployed with private IPs and no public exposure.
+- **No Encryption at Rest**: Not implemented due to the non-sensitive nature of the data and performance trade-offs.
+
+
+## Deployment
 
 To deploy the infrastructure, follow these steps:
 
@@ -35,7 +52,13 @@ To deploy the infrastructure, follow these steps:
     ```terraform output```
     ![terraform output](docs/images/terraformoutput.png)
 
-# Deletion
+## Deletion
 1. Make sure to run ```terraform init``` if you haven't already
 2. Run the following command to destroy the stack:
     ```terraform destroy```
+
+## Submission Notes
+
+This repository is submitted as part of an interview project. Please refer to the `main.tf.example` and `variables.tf` files for configuration. Screenshots are included in the `docs/images` folder to illustrate key deployment steps.
+
+Feel free to reach out during the interview for a walkthrough of the architecture and design decisions.
