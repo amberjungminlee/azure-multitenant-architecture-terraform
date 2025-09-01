@@ -1,5 +1,8 @@
 # Security
 
+## Compliance
+For security, I assumed that HIPAA compliance is not necessary because no PII should be involved in Mars research or Earth observation data. However, I assumed all resources should be set to private by default, but may not need encryption at rest or require complex access controls or auditing.
+
 ## Resources that help security
 
 ### Route Tables
@@ -31,15 +34,15 @@ This limits the damage that could result from compromised credentials or human e
 ## Screenshots
 
 Fictional Team Alpha member can log into her account.
-![Login page](arielteamalphaloginpage.png)
+![Login page](images/arielteamalphaloginpage.png)
 
 Team Alpha member can only see her own resource group from the VM creation page
-![VM Creation settings](arielteamalphaonlyseeherownresourcegroup.png)
-![VM Creation validation](arielteamalphavmcreation.png)
-![VM Final creation](arielteamalphacanseealphavms.png)
+![VM Creation settings](images/arielteamalphaonlyseeherownresourcegroup.png)
+![VM Creation validation](images/arielteamalphavmcreation.png)
+![VM Final creation](images/arielteamalphacanseealphavms.png)
 
 Team Beta member cannot see Team alpha's newly created virtual machine
-![Beta's VM list appears empty](bobteambetacannotseealphavm.png)
+![Beta's VM list appears empty](images/bobteambetacannotseealphavm.png)
 
 Developers are restricted from seeing certain pages not included in their permissions.
-![Restricted access](developernoaccesscostanalysis.png)
+![Restricted access](images/developernoaccesscostanalysis.png)

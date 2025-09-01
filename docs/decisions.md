@@ -10,6 +10,7 @@ Design Decisions
  2. All teams will have the same IAM roles (Operator, Developer, Read-Only)
  3. Key Vault makes sense as part of the shared resources
  4. Resource groups help analyze each team's usage separately in cost analysis
+ 5. A team will have access to their own log analytics workspace as well as a shared analytics workspace
 
 Future Developments to make scripts production ready
  1. Create module for users and role assignments
@@ -46,7 +47,10 @@ New roles can be added, but this will require a DevOps engineer to add the custo
 When it comes to certain data like recommended Azure VM image URNs that have gone through proper security approvals, it makes sense to have this as part of the shared storage, so when developers make new deployments, they won't have to "fish" for the latest recommended images and won't deploy outdated versions of docker. 
 
 ### 4. Resource groups help analyze each team's usage separately in cost analysis
-![Cost Analysis](costanalysisseparatedbyresourcegroup.png)
+![Cost Analysis](images/costanalysisseparatedbyresourcegroup.png)
+
+### 5. A team will have access to their own log analytics workspace as well as a shared analytics workspace
+For security reasons, teams should not have unrestricted access to all logs. However, have limited access to some log analytics about the whole Azure account could be helpful, so a shared log analytics workspace has been set up. Each team would also have access to their own log analytics workspace so they can track their own usage and expenses.
 
 ## Future Developments
 ### 1. Create module for users and role assignments
@@ -74,5 +78,3 @@ I used Copilot as a sounding board during the architecture design process to dec
 ## Appendix: Challenges
 1. A lot of permissions are involved when it comes to allowing permissions to provision a virtual machine, so custom roles ended up taking more time than expected.
 2. Azure CLI is more effective than Azure UI when provisioning certain resources such as role assignments. The UI was challenging to navigate.
-
-

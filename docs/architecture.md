@@ -9,6 +9,7 @@ Team Alpha: Mars Climate Research Team
 - NAT Gateway
 - IAM Roles (Operator, Developer, Readonly)
 - Routing Table
+- Log analytics workspace
 
 Team Alpha: Mars Climate Research Team
 - Resource Group
@@ -17,8 +18,10 @@ Team Alpha: Mars Climate Research Team
 - NAT Gateway
 - IAM Roles (Operator, Developer, Readonly)
 - Routing Table
+- Log analytics workspace
 
 Shared resources
 - Key Vault store
+- Log analytics workspace
 
-![Network diagram](networkdiagram.png)
+![Network diagram](images/networkdiagram.png)
