@@ -23,7 +23,6 @@ To deploy the infrastructure, follow these steps:
     - backend local path - Location of your statefile for terraform. Set it to ```environments/<your-environment>/terraform.tf```
 4. Initialize terraform with the following command:
     ```terraform init```
-    ![terraform init 1](docs/images/terraforminit1.png)
     ![terraform init 2](docs/images/terraforminit2.png)
 5. Plan the deployment to view the resources to be created:
     ```terraform plan```
@@ -31,8 +30,6 @@ To deploy the infrastructure, follow these steps:
     ![terraform plan 2](docs/images/terraformplan2.png)
 6. Apply the deployment if there are no issues.
     ```terraform apply```
-    ![terraform apply 1](docs/images/terraformapply1.png)
-    ![terraform apply 2](docs/images/terraformapply2.png)
     ![terraform apply 3](docs/images/terraformapply3.png)
 7. If you would like to view the outputs, you can also run the command
     ```terraform output```
