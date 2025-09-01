@@ -20,6 +20,7 @@ To deploy the infrastructure, follow these steps:
     - team_locations - map that container information about each team and their locations. For additional teams, you will have to add their information here.
     - team_networks - Custom private address spaces and subnets for each team
     - shared_location - Location of where the shared resource group is stored.
+    - backend local path - Location of your statefile for terraform. Set it to ```environments/<your-environment>/terraform.tf```
 4. Initialize terraform with the following command:
     ```terraform init```
 5. Plan the deployment to view the resources to be created:
