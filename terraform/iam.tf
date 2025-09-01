@@ -67,3 +67,11 @@ resource "azurerm_role_definition" "read_only" {
   assignable_scopes = [azurerm_resource_group.team_resource_group[each.key].id]
 }
 
+resource "azurerm_log_analytics_workspace" "team_logs" {
+  for_each  = var.team_locations
+  name                = replace("logs-${var.environment}-${each.key}", "_", "-")
+  location            = each.value
+  resource_group_name = each.key
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}

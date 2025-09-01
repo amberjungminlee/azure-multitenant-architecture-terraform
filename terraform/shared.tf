@@ -57,3 +57,12 @@ resource "azurerm_key_vault" "shared_key_vault" {
     Team = "AllUsers"
   }
 }
+
+
+resource "azurerm_log_analytics_workspace" "shared_logs" {
+  name                = "shared-logs"
+  location            = azurerm_resource_group.shared_resource_group.location
+  resource_group_name = azurerm_resource_group.shared_resource_group.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
