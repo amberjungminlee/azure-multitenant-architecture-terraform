@@ -74,4 +74,9 @@ resource "azurerm_log_analytics_workspace" "team_logs" {
   resource_group_name = each.key
   sku                 = "PerGB2018"
   retention_in_days   = 30
+
+  tags = {
+    Team = each.key   
+    Environment = var.environment
+  }
 }

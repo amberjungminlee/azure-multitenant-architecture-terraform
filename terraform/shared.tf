@@ -65,4 +65,7 @@ resource "azurerm_log_analytics_workspace" "shared_logs" {
   resource_group_name = azurerm_resource_group.shared_resource_group.name
   sku                 = "PerGB2018"
   retention_in_days   = 30
+  tags = {
+    Team = "AllUsers"
+  }
 }
