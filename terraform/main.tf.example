@@ -7,10 +7,10 @@ terraform {
   }
   backend "local" {
   //   # Please update based on baseline
-  //   # path = environment/sit/terraform.tfstate
-  //   # path = environment/uat/terraform.tfstate
-  //   # path = environment/prod/terraform.tfstate
-     path = environment/sit/terraform.tfstate
+  //   # path = environments/sit/terraform.tfstate
+  //   # path = environments/uat/terraform.tfstate
+  //   # path = environments/prod/terraform.tfstate
+     path = environments/sit/terraform.tfstate
   }
 }
 
