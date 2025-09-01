@@ -9,6 +9,7 @@ Design Decisions
  1. NAT Gateways have to be separate for all teams
  2. All teams will have the same IAM roles (Operator, Developer, Read-Only)
  3. Key Vault makes sense as part of the shared resources
+ 4. Resource groups help analyze each team's usage separately in cost analysis
 
 Future Developments to make scripts production ready
  1. Create module for users and role assignments
@@ -16,6 +17,7 @@ Future Developments to make scripts production ready
  3. Set prevent_destroy flag on the majority of resources
  4. Set backend to store statefiles in Azure instead of local
  5. Configure the routes for the routing table
+ 6. Didn't completely set up an application for testing yet
 
 Appendix: How AI was Used
 Appendix: Challenges
@@ -42,6 +44,9 @@ New roles can be added, but this will require a DevOps engineer to add the custo
 
 ### 3. Key Vault makes sense as part of the shared resources
 When it comes to certain data like recommended Azure VM image URNs that have gone through proper security approvals, it makes sense to have this as part of the shared storage, so when developers make new deployments, they won't have to "fish" for the latest recommended images and won't deploy outdated versions of docker. 
+
+### 4. Resource groups help analyze each team's usage separately in cost analysis
+![Cost Analysis](costanalysisseparatedbyresourcegroup.png)
 
 ## Future Developments
 ### 1. Create module for users and role assignments

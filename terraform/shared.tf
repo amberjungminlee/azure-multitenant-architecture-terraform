@@ -17,8 +17,10 @@ data "azuread_users" "all" {
 
 resource "azuread_group_member" "members" {
   for_each       = { for user in data.azuread_users.all.users : user.object_id => user }
+  
   group_object_id = replace(azuread_group.all_users.id, "//groups//", "")
   member_object_id = each.key
+
 }
 
 # Shared resources
@@ -49,5 +51,9 @@ resource "azurerm_key_vault" "shared_key_vault" {
     storage_permissions = [
       "Get",
     ]
+  }
+  
+  tags = {
+    Team = "AllUsers"
   }
 }

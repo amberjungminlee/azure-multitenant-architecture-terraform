@@ -31,7 +31,15 @@ This limits the damage that could result from compromised credentials or human e
 ## Screenshots
 
 Fictional Team Alpha member can log into her account.
-[!arielteamalphaloginpage.png]
+![Login page](arielteamalphaloginpage.png)
 
-Team Alpha can only see her own resource group from the VM creation page
-[!arielteamalphaonlyseeherownresourcegroup.png]
+Team Alpha member can only see her own resource group from the VM creation page
+![VM Creation settings](arielteamalphaonlyseeherownresourcegroup.png)
+![VM Creation validation](arielteamalphavmcreation.png)
+![VM Final creation](arielteamalphacanseealphavms.png)
+
+Team Beta member cannot see Team alpha's newly created virtual machine
+![Beta's VM list appears empty](bobteambetacannotseealphavm.png)
+
+Developers are restricted from seeing certain pages not included in their permissions.
+![Restricted access](developernoaccesscostanalysis.png)

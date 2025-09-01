@@ -35,11 +35,16 @@ resource "azurerm_role_definition" "developer" {
       "Microsoft.Resources/subscriptions/resourceGroups/read",
       "Microsoft.Network/virtualNetworks/subnets/join/action",
       "Microsoft.Network/networkInterfaces/read",
-      "Microsoft.Network/publicIPAddresses/read"
+      "Microsoft.Network/publicIPAddresses/read",
+      "Microsoft.Network/publicIPAddresses/write", # Delete this later
+      "Microsoft.Network/networkInterfaces/write", # Delete this later
+      "Microsoft.Resources/deployments/write",
+      "Microsoft.Resources/deployments/read"
+
     ]
     not_actions = []
   }
-  assignable_scopes = [azurerm_resource_group.team_resource_group[each.key].id]
+  assignable_scopes = [azurerm_resource_group.team_resource_group[each.key].id, "/subscriptions/bea4c615-4bd3-4afb-989c-e68ec72d9d83/resourceGroups/rg-mars_climate_research_team-sit/providers/Microsoft.Resources/deployments/CreateVm-canonical.ubuntu-24_04-lts-server-20250901120616"]
 }
 
 resource "azurerm_role_definition" "read_only" {
@@ -61,3 +66,4 @@ resource "azurerm_role_definition" "read_only" {
 
   assignable_scopes = [azurerm_resource_group.team_resource_group[each.key].id]
 }
+
