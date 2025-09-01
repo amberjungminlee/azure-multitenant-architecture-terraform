@@ -21,4 +21,4 @@ Team Alpha: Mars Climate Research Team
 Shared resources
 - Key Vault store
 
-[!networkdiagram.png]
+![Network diagram](networkdiagram.png)
