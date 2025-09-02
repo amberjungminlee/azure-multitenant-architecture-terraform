@@ -33,6 +33,10 @@ resource "azurerm_virtual_network" "team_virtual_networks" {
   resource_group_name = "rg-${each.key}-${var.environment}"
   address_space       = var.team_networks[each.key][var.environment].address_space
 
+  encryption {
+    enforcement = "DropUnencrypted"
+  }
+
   dynamic "subnet" {
     for_each = each.value[var.environment].subnet_prefixes
     content {
